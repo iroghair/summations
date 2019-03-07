@@ -1,4 +1,4 @@
-# Neighborlists 
+# Summations 
 
 ## Intro
 It has been found that a parallel implementation of the DPM did not provide
