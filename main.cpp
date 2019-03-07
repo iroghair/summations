@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
             sum4 = t;
         }
         printf("Four different summations:\n");
-        printf("OpenMP: %1.16e -- Serial 0->nparts: %1.16e -- Serial nparts-->0: %1.16e -- Kahan: %1.16e\n", sum1,sum2,sum3,sum4);
+        printf(" OpenMP: \t\t%1.16e\n Serial 0->nparts: \t%1.16e\n Serial nparts-->0: \t%1.16e\n Kahan: \t\t%1.16e\n", sum1,sum2,sum3,sum4);
     }
     else cout << "Error opening file " << argv[1] << ".\n\n" << endl;
 
