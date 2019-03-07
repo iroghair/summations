@@ -4,6 +4,7 @@
 #include <limits>
 #include <chrono>
 #include <omp.h>
+#include <quadmath.h>
 
 typedef std::chrono::high_resolution_clock Clock;
 
@@ -39,6 +40,7 @@ int main(int argc, char* argv[])
 
         double sum1 = 0.0, sum2 = 0.0;
         double sum3 = 0.0, sum4 = 0.0;
+        __float128 sum5 = 0.0;
 
         // Parallel with OpenMP (dynamic scheduler may yield different 
         // results each time the program is run!)
@@ -67,8 +69,19 @@ int main(int argc, char* argv[])
             c = (t - sum4) - y;
             sum4 = t;
         }
-        printf("Four different summations:\n");
-        printf(" OpenMP: \t\t%1.16e\n Serial 0->nparts: \t%1.16e\n Serial nparts-->0: \t%1.16e\n Kahan: \t\t%1.16e\n", sum1,sum2,sum3,sum4);
+
+        // Now for the quad-precision answer
+        for (int i=0;i<npart;i++) {
+            sum5 +=pos[i][0]+pos[i][1]+pos[i][2];
+        }
+
+        int width = 46;
+        char buf[128];
+        int n = quadmath_snprintf (buf, sizeof(buf), "%1.30Qe", width, sum5);
+        printf ("The truth, and nothing but the truth (i.e. quad precision):\n\t\t\t %s\n", buf);
+
+        printf("Four different summations with double:\n");
+        printf(" OpenMP: \t\t%1.16e (delta: %+-#1.16e)\n Serial 0->nparts: \t%1.16e (delta: %+-#1.16e)\n Serial nparts-->0: \t%1.16e (delta: %+-#1.16e)\n Kahan: \t\t%1.16e (delta: %+-#1.16e)\n", sum1,(double) sum5-sum1,sum2,(double) sum5-sum2,sum3,(double) sum5-sum3,sum4,(double) sum5-sum4);
     }
     else cout << "Error opening file " << argv[1] << ".\n\n" << endl;
 
