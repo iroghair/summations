@@ -36,24 +36,30 @@ int main(int argc, char* argv[])
         }
         file.close();
 
-        double c = 0.0;
+
         double sum1 = 0.0, sum2 = 0.0;
         double sum3 = 0.0, sum4 = 0.0;
-        double y, t;
 
-                
+        // Parallel with OpenMP (dynamic scheduler may yield different 
+        // results each time the program is run!)
         #pragma omp parallel for schedule(dynamic) reduction(+:sum1)
         for (int i=0;i<npart;i++) {
             sum1 +=pos[i][0]+pos[i][1]+pos[i][2];
         }
-
+        
+        // Serial forward
         for (int i=0;i<npart;i++) {
             sum2 +=pos[i][0]+pos[i][1]+pos[i][2];
         }
 
+        // Serial backward
         for (int i=npart-1;i>=0;i--) {
             sum3 +=pos[i][0]+pos[i][1]+pos[i][2];
         }
+
+        // Kahan summation algorithm
+        double c = 0.0;
+        double y, t;
 
         for (int i=0;i<npart;i++) {
             y = pos[i][0]+pos[i][1]+pos[i][2] - c;
