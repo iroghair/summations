@@ -19,7 +19,7 @@ positions.
 * A main file `main.cpp` that loads the binary file into an N x 3 array, and
 proceeds to sum all the positions to a single summation:
 ```math
-    s_1 = \sum_n=0^n=\mathrm{npart} x_n + y_n + z_n
+    s_1 = \sum_{n=0}^{n=\mathrm{npart}} x_n + y_n + z_n
 ```
 It accounts for a summation using OpenMP parallelization, a serial summation
 (counting from 0 up to npart), another serial (counting down from npart to 0) 
@@ -33,7 +33,10 @@ $ ./summation example.bin
 Trying to open file example.bin ...
 Trying to read 10000000 positions from file...
 Four different summations:
-OpenMP: 1.4999288710279200e+07 -- Serial 0->nparts: 1.4999288710278464e+07 -- Serial nparts-->0: 1.4999288710281001e+07 -- Kahan: 1.4999288710279370e+07
+ OpenMP:                1.4999288710279465e+07
+ Serial 0->nparts:      1.4999288710278464e+07
+ Serial nparts-->0:     1.4999288710281001e+07
+ Kahan:                 1.4999288710279370e+07
 Exiting normally...
 ```
 
