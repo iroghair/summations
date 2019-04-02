@@ -12,8 +12,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+    // Initialise variables
     int npart;
-    
     double** pos;
 
     cout.precision(numeric_limits<double>::max_digits10);
